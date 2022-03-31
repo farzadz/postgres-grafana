@@ -23,6 +23,7 @@ services:
     env_file: 
       - environment/.env
   pgadmin:
+    user: root
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: example@example.com
@@ -30,6 +31,8 @@ services:
       PGADMIN_LISTEN_PORT: 5050
     ports:
       - 5050:5050
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
 
 volumes:
   grafana-storage:
