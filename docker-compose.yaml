@@ -1,17 +1,17 @@
 version: '3.1'
 
 services:
-  # grafana:
-  #   container_name: grafana
-  #   image: grafana/grafana:latest
-  #   restart: unless-stopped
-  #   depends_on:
-  #       - postgres
-  #   ports:
-  #       - 3000:3000
-  #   volumes:
-  #     - grafana-storage:/var/lib/grafana
-  #   env_file: environment/.env
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    depends_on:
+        - postgres
+    ports:
+        - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    env_file: environment/.env
   postgres:
     container_name: postgres
     image: postgres:14-bullseye   
