@@ -1,5 +1,4 @@
-# #!/bin/bash
-# set -e
+#!/bin/bash
 
 # psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
 
@@ -22,3 +21,5 @@
 # GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA grafana_schema TO grafana;
 
 # EOSQL
+
+

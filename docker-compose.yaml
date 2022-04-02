@@ -1,27 +1,51 @@
-version: '3.1'
+version: '3.9'
 
 services:
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    restart: unless-stopped
-    depends_on:
-        - postgres
-    ports:
-        - 3000:3000
-    volumes:
-      - grafana-storage:/var/lib/grafana
-    env_file: environment/.env
+  # grafana:
+  #   user: root
+  #   container_name: grafana
+  #   image: grafana/grafana:latest
+  #   restart: unless-stopped
+  #   depends_on:
+  #       - postgres
+  #   ports:
+  #       - 3000:3000
+  #   volumes:
+  #     - grafana-storage:/var/lib/grafana
+  #   env_file: environment/.env
+
   postgres:
     container_name: postgres
-    image: postgres:14-bullseye   
+    image: timescale/timescaledb:latest-pg14   
     ports:
       - 5432:5432                 
     volumes:
       - ./setupdb/sql:/docker-entrypoint-initdb.d
-      # - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
     env_file: 
       - environment/.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    container_name: flyway
+    build: ./flyway
+    entrypoint: /bin/bash
+    command: /scripts/init.sh
+    volumes:
+      - ./flyway/init.sh:/scripts/init.sh
+      - ./flyway/conf/sql:/flyway/sql
+      - ./flyway/data:/flyway/data
+      - ./flyway/conf/flyway.config:/flyway/conf/flyway.config
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: 
+      - environment/.env
+
   pgadmin:
     user: root
     image: dpage/pgadmin4
@@ -36,3 +60,6 @@ services:
 
 volumes:
   grafana-storage:
+
+
+
