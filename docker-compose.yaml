@@ -1,18 +1,18 @@
 version: '3.9'
 
 services:
-  # grafana:
-  #   user: root
-  #   container_name: grafana
-  #   image: grafana/grafana:latest
-  #   restart: unless-stopped
-  #   depends_on:
-  #       - postgres
-  #   ports:
-  #       - 3000:3000
-  #   volumes:
-  #     - grafana-storage:/var/lib/grafana
-  #   env_file: environment/.env
+  grafana:
+    user: root
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    depends_on:
+        - postgres
+    ports:
+        - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    env_file: environment/.env
 
   postgres:
     container_name: postgres
